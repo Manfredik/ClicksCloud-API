@@ -48,7 +48,7 @@ class Api
      * @throws Exception
      */
     public static function createCampaign($title, $run = 1, $price = 5.0, $country = "RU, KZ, UZ, BY, UA", $device = "", $clpd = 0, $cl = 0){
-        return static::request('campaign/statistic',
+        return static::request('campaign/create',
             ['title' => $title, 'run' => (int) $run,'price' => (float) $price,
                 'target_country' => (string) $country, 'target_device' => $device,
                 'click_limit_per_day' => (int) $clpd, 'click_limit' => $cl])['campaign'];
@@ -70,7 +70,7 @@ class Api
      * @throws Exception
      */
     public static function updateCampaign($campaign_id, array $params = ['run' => 1, 'price' => 4.99]){
-        return static::request('campaign/statistic',
+        return static::request('campaign/update-campaign',
             array_merge(['campaign_id' => $campaign_id], $params))['campaign'];
     }
 
