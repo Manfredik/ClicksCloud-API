@@ -57,14 +57,14 @@ class Api
      * Обновить параметры кампании
      * @param $campaign_id
      * @param array $params [
-    'title'                  => String,
-    'run'                    => Int,
-    'price'                  => Float
-    'target_country'         => String
-    'target_device'          => String
-    'click_limit_per_day'    => Int
-    'click_limit'            => Int
-     * ]1
+     *     'title'                  => String,
+     *     'run'                    => Int,
+     *     'price'                  => Float
+     *     'target_country'         => String
+     *     'target_device'          => String
+     *     'click_limit_per_day'    => Int
+     *     'click_limit'            => Int
+     * ]
      * @return mixed
      * @throws Exception
      */
