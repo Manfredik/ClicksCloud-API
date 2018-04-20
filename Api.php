@@ -5,6 +5,7 @@
  * Email:   denis@spacepush.ru
  * Date:    20.04.2018
  */
+namespace clickscloud;
 
 class Api
 {
