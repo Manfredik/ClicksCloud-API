@@ -18,7 +18,7 @@ class Api
      * Получить список кампаний
      * @param bool $active
      * @return mixed
-     * @throws Exception
+     * @throws \Exception
      */
     public static function getCampaignList($active = true){
         return static::request('campaign/index', ['active' => $active])['campaigns'];
@@ -30,7 +30,7 @@ class Api
      * @param String $from (d.m.Y)
      * @param String $to (d.m.Y)
      * @return array
-     * @throws Exception
+     * @throws \Exception
      */
     public static function getCampaignStatistic($campaign_id, $from = null, $to = null) {
         return static::request('campaign/statistic', ['$campaign_id' => (int)$campaign_id, 'from' => $from, 'to' => $to ]);
@@ -40,17 +40,20 @@ class Api
      * @param $title
      * @param int $run
      * @param float $price
-     * @param string $country
-     * @param string $device
+     * @param string $target_country
+     * @param string $target_device
+     * @param string $without_landing ( string id divided by commas eg. '6,7,8' )
+     * @param string $without_source ( string of id divided by commas eg. '6,7,8' )
      * @param int $clpd
      * @param int $cl
      * @return array
-     * @throws Exception
+     * @throws \Exception
      */
-    public static function createCampaign($title, $run = 1, $price = 5.0, $country = "RU, KZ, UZ, BY, UA", $device = "", $clpd = 0, $cl = 0){
+    public static function createCampaign($title, $run = 1, $price = 5.0, $target_country = "RU, KZ, UZ, BY, UA", $target_device = "", $without_landing = '', $without_source = '', $clpd = 0, $cl = 0){
         return static::request('campaign/create',
             ['title' => $title, 'run' => (int) $run,'price' => (float) $price,
-                'target_country' => (string) $country, 'target_device' => $device,
+                'target_country' => (string) $target_country, 'target_device' => $target_device,
+                'without_landing' => (string) $without_landing, 'without_source' => (string) $without_source,
                 'click_limit_per_day' => (int) $clpd, 'click_limit' => $cl])['campaign'];
     }
 
@@ -58,16 +61,18 @@ class Api
      * Обновить параметры кампании
      * @param $campaign_id
      * @param array $params [
-     *     'title'                  => String,
-     *     'run'                    => Int,
-     *     'price'                  => Float
-     *     'target_country'         => String
-     *     'target_device'          => String
-     *     'click_limit_per_day'    => Int
-     *     'click_limit'            => Int
+     *   'title'                  => String,
+     *   'run'                    => Int,
+     *   'price'                  => Float
+     *   'target_country'         => String
+     *   'target_device'          => String
+     *   'without_landing'          => String of id divided by commas
+     *   'without_source'          => String of id divided by commas
+     *   'click_limit_per_day'    => Int
+     *   'click_limit'            => Int
      * ]
      * @return mixed
-     * @throws Exception
+     * @throws \Exception
      */
     public static function updateCampaign($campaign_id, array $params = ['run' => 1, 'price' => 4.99]){
         return static::request('campaign/update-campaign',
@@ -81,10 +86,22 @@ class Api
      * @param String (d.m.Y) $from
      * @param String (d.m.Y) $to
      * @return array
-     * @throws Exception
+     * @throws \Exception
      */
     public static function getTeaserList($campaign_id, $run = -1,$from = null, $to = null) {
         return static::request('campaign/list', ['campaign_id' => (int)$campaign_id, 'from' => $from, 'to' => $to, 'run' => $run ]);
+    }
+
+    /**
+     * @param $campaign_id
+     * @param string $without_landing
+     * @param string $without_source
+     * @return mixed
+     * @throws \Exception
+     */
+    public static function updateBlacklist($campaign_id, $without_landing = '', $without_source = '')
+    {
+        return static::request('campaign/update-blacklist', ['campaign_id' => $campaign_id, 'without_landing' => $without_landing, 'without_source' => $without_source]);
     }
 
     /**
@@ -92,7 +109,7 @@ class Api
      * @param Int $teaser_id
      * @param Int $run (0 - отключить, 1 включить)
      * @return boolean
-     * @throws Exception
+     * @throws \Exception
      */
     public static function teaserToggle($campaign_id, $teaser_id, $run ) {
         return static::request('campaign/toggle-teaser', ['campaign_id' => (int)$campaign_id, 'teaser_id' => (int) $teaser_id, 'run' => (int) $run ]);
@@ -102,7 +119,7 @@ class Api
      * @param Int $teaser_id
      * @param Float $price
      * @return boolean
-     * @throws Exception
+     * @throws \Exception
      */
     public static function teaserTogglePrice($campaign_id, $teaser_id, $price) {
         return static::request('campaign/toggle-price', ['campaign_id' => (int)$campaign_id, 'teaser_id' => (int) $teaser_id, 'price' => (float) $price ]);
@@ -116,7 +133,7 @@ class Api
      * @param $price Float
      * @param $image String Base64_encode (without prefix "data:image/TYPE;base64,")
      * @return mixed
-     * @throws Exception
+     * @throws \Exception
      */
     public static function createTeaser($campaign_id, $title, $link, $price, $image)
     {
@@ -128,7 +145,7 @@ class Api
      * @param Integer $teaser_id
      * @param array $params = [title => String, $link => String, price => Float, image => String (without prefix "data:image/TYPE;base64,")]
      * @return Boolean
-     * @throws Exception
+     * @throws \Exception
      */
     public static function updateTeaser($campaign_id, $teaser_id, $params = [])
     {
@@ -142,7 +159,7 @@ class Api
      * @param DateFormat(d.m.Y) $from
      * @param DateFormat(d.m.Y) $to
      * @return array
-     * @throws Exception
+     * @throws \Exception
      */
     public static function getTeaserStatistic($campaign_id, $teaser_id, $from = null, $to = null) {
         return static::request('campaign/teaser-statistic',
@@ -168,7 +185,7 @@ class Api
         if ($response['status'] == 200) {
             return $response['response'];
         } else {
-            throw new Exception($response['response']['error']);
+            throw new \Exception($response['response']['error']);
         }
     }
 

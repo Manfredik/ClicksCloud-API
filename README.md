@@ -3,6 +3,14 @@ PHP библиотека для работы с тизерной сетью Clic
 
 Для работы через API вам необходимо получить ключ API для вашего пользователя у вашего персонального менеджера
 
+## Получение баланса пользователя
+```php
+/**
+* @param Int $active = 1
+**/
+$balance = clickscloud/Api::getBalance();
+```
+
 ## Получение списка кампаний
 ```php
 /**
@@ -31,8 +39,10 @@ $list = clickscloud/Api::getCampaignList();
  * @param string $title             Название кампании
  * @param int $run                  Запущена ли кампания
  * @param float $price              Цена по умолчанию
- * @param string $country           Список iso кодов стран черезх запятую (RU, KZ)
- * @param string $device            Список таргетинга по устройствам (desktop, mobile, tablet)
+ * @param string $target_country    Список iso кодов стран черезх запятую (RU, KZ)
+ * @param string $target_device     Список таргетинга по устройствам (desktop, mobile, tablet)
+ * @param string $without_landing   Список лэндингов разделенный через запяту 'hash,hash,hash' )
+ * @param string $without_source    Список id источников разделенный через запяту '12,15,1' )
  * @param int $click_limit_per_day  Дневной лимит кликов     
  * @param int $click_limit          Лимит кликов общий
  */
@@ -60,6 +70,8 @@ $campaign = clickscloud/Api::createCampaign('Campaign Name', 1, 3.2, 'RU');
  *     'price'                  => Float
  *     'target_country'         => String
  *     'target_device'          => String
+ *     'without_landing'        => String   Список лэндингов разделенный через запяту 'hash,hash,hash' )
+ *     'without_source'         => String
  *     'click_limit_per_day'    => Int
  *     'click_limit'            => Int
  * ]
