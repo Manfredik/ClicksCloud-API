@@ -3,6 +3,13 @@ PHP библиотека для работы с тизерной сетью Clic
 
 Для работы через API вам необходимо получить ключ API для вашего пользователя у вашего персонального менеджера
 
+## Начало работы 
+```php
+include('clickscloud/Api.php');
+clickscloud\Api::$KEY   = 'Enter Your key';
+clickscloud\Api::$ID    = 'Enter Your Accaunt id';
+```
+
 ## Получение баланса пользователя
 ```php
 /**
