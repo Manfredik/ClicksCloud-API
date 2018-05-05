@@ -35,7 +35,13 @@ $list = clickscloud/Api::getCampaignList();
     "type":     Integer,    // Тип кампании (0 - кампания с тизерами)
     "utm":      Object,     // Объект описывает макросы кампании
     "views":    Integer,    // Сумарное кол-во показов тизеров кампании
-    "clicks":   Integer     // Суммарное кол-во кликов
+    "clicks":   Integer,     // Суммарное кол-во кликов
+    "target": {
+        "country":  Array,    // Массив ISO кодов стран для таргетирования
+        "custom":   Array,    // Массив таргета по устройствам
+        "without_landing":  Array,    // Черный список новостей
+        "without_source":   Array,     // Черный список источников
+    }
   ], [...]
 ]
 ```
@@ -64,7 +70,13 @@ $campaign = clickscloud/Api::createCampaign('Campaign Name', 1, 3.2, 'RU');
     "type":     Integer,    // Тип кампании (0 - кампания с тизерами)
     "utm":      Object,     // Объект описывает макросы кампании
     "views":    Integer,    // Сумарное кол-во показов тизеров кампании за весь переид
-    "clicks":   Integer     // Суммарное кол-во кликов за весь перид работы кампании
+    "clicks":   Integer,     // Суммарное кол-во кликов за весь перид работы кампании
+    "target": {
+        "country":  Array,    // Массив ISO кодов стран для таргетирования
+        "custom":   Array,    // Массив таргета по устройствам
+        "without_landing":  Array,    // Черный список новостей
+        "without_source":   Array,     // Черный список источников
+    }
 ]
 ```
 ## Обновить существующую кампанию
@@ -94,7 +106,40 @@ $campaign = clickscloud/Api::updateCampaign($campaign_id, ['title' => 'new Campa
     "type":     Integer,    // Тип кампании (0 - кампания с тизерами)
     "utm":      Object,     // Объект описывает макросы кампании
     "views":    Integer,    // Сумарное кол-во показов тизеров кампании за весь переид
-    "clicks":   Integer     // Суммарное кол-во кликов за весь перид работы кампании
+    "clicks":   Integer,     // Суммарное кол-во кликов за весь перид работы кампании
+    "target": {
+        "country":  Array,    // Массив ISO кодов стран для таргетирования
+        "custom":   Array,    // Массив таргета по устройствам
+        "without_landing":  Array,    // Черный список новостей
+        "without_source":   Array,     // Черный список источников
+    }
+]
+```
+## Обновить черный список кампании
+   ```php
+   /**
+    * @param $campaign_id
+    * @param string $without_landing   Список лэндингов разделенный через запяту 'hash,hash,hash' )
+    * @param string $without_source    Список id источников разделенный через запяту '12,15,1' )
+    */
+   $campaign = clickscloud/Api::updateBlacklist($campaign_id, $without_landing = '', $without_source = '');
+   ```
+   В результате выполрнения вы получите обновленный объект кампании
+```
+[
+    "id":       Integer,    // ID Кампании
+    "title":    String,     // Название кампании
+    "run":      Boolean,    // Запущена ли кампания в текущий момент
+    "type":     Integer,    // Тип кампании (0 - кампания с тизерами)
+    "utm":      Object,     // Объект описывает макросы кампании
+    "views":    Integer,    // Сумарное кол-во показов тизеров кампании за весь переид
+    "clicks":   Integer,     // Суммарное кол-во кликов за весь перид работы кампании
+    "target": {
+        "country":  Array,    // Массив ISO кодов стран для таргетирования
+        "custom":   Array,    // Массив таргета по устройствам
+        "without_landing":  Array,    // Черный список новостей
+        "without_source":   Array,     // Черный список источников
+    }
 ]
 ```
 ## Статистика кампании
